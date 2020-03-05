@@ -1,7 +1,5 @@
 <?php 
-
 namespace app\api\controller;
-
 
 class Patient extends Common{
 
@@ -20,8 +18,27 @@ class Patient extends Common{
 		$res = db('patient')->where('patient_id',$data)->find();
 		if($res){
 			$this->return_msg(200,'查询就诊人成功',$res);
+		}elseif ($res == 0) {
+			$this->return_msg(200,'查询就诊人成功',$res);
 		}else{
 			$this->return_msg(400,'查询就诊人失败',$res);
+		}
+	}
+	
+	public function select_patient_list(){
+		$data = $this->params['user_id'];
+		$res = db('patient')->where('user_id',$data)->select();
+		if(count($res,COUNT_RECURSIVE) > 0){
+			foreach ($res as $key => $value) {
+				$card = $res[$key]['patient_card'];
+				substr_replace($card,"*******",8,);
+			}
+			$this->return_msg(200,'查询就诊人列表成功',$res);
+		}elseif (count($res,COUNT_RECURSIVE) == 0) {
+			$this->return_msg(200,'查询就诊人列表成功',$res);
+		}
+		else{
+			$this->return_msg(400,'查询就诊人列表失败',$res);
 		}
 	}
 
