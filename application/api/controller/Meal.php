@@ -15,9 +15,10 @@ class Meal extends Common{
 
 	public function select_meal(){
 		// $data = $this->params['patient_id'];
-		$res = db('meal')->select();
+		$page = $this->params['page'];
+		$res = db('meal')->page($page,10)->select();
 		if(count($res) >= 0){
-			$this->return_msg(200,'查询套餐成功',$res);
+			$this->return_msg(200,'查询套餐成功',$res,count($res));
 		}else{
 			$this->return_msg(400,'查询套餐失败',$res);
 		}

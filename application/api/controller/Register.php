@@ -9,6 +9,7 @@ class Register extends Common{
 		$register_date = $this->params['register_date'];
 		$patient_id = $this->params['patient_id'];
 
+		//查询挂号是否重复
 		$res = db('register')
 			   ->where('register_date',$register_date)
 			   ->where('patient_id',$patient_id)
@@ -21,6 +22,7 @@ class Register extends Common{
 		$data['register_status'] = 0;
 		$data['order_time'] = time();
 		$res = db('register')->insertGetId($data);
+		$test_id = $res;
 		if($res){
 			$notice = [
 				'notice_content' => '你已成功预约挂号，点击查看详情',
@@ -32,7 +34,7 @@ class Register extends Common{
 			];
 			$res = db('notice')->insertGetId($notice);
 			if($res){
-				$this->return_msg(200,'新增预约成功',$res);
+				$this->return_msg(200,'新增预约成功',$test_id);
 			}else{
 				$this->return_msg(400,'新增预约失败');
 			}
@@ -43,6 +45,7 @@ class Register extends Common{
 
 	public function select_register(){
 		$data = $this->params['patient_id'];
+		$page = $this->params['page'];
 		$res = db('register')
 			   ->join('doctor','register.doctor_id = doctor.doctor_id')
 			   ->join('office','doctor.office_id = office.office_id')
@@ -50,6 +53,7 @@ class Register extends Common{
 			   ->join('patient','patient.patient_id = register.patient_id')
 			   ->where('register.patient_id',$data)
 			   ->order('register_date','desc')
+			   ->page($page,10)
 			   ->select();
 		if(count($res) >= 0){
 			foreach ($res as $key => $value) {
@@ -60,7 +64,7 @@ class Register extends Common{
 				$res[$key]['register_status'] = $this->turn_status($res[$key]['register_status']);
 				$res[$key]['doctor_title'] = $this->turn_title($res[$key]['doctor_title']);
 			}
-			$this->return_msg(200,'查询预约详细成功',$res);
+			$this->return_msg(200,'查询预约详细成功',$res,count($res));
 		}else{
 			$this->return_msg(400,'查询预约详细失败',$res);
 		}

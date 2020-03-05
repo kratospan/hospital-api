@@ -14,10 +14,10 @@ class Common extends Controller {
     protected $params; //过滤后符合要求的参数
     //定义参数过滤的规则
     protected $rules = array(
-    	'User' => array (
+    	'Login' => array (
     		'login' => array (
-    			'user_name' => ['require','chsDash','max'=>20],
-    			'user_pwd' => 'require|length:32'
+    			// 'user_name' => ['require','chsDash','max'=>20],
+    			'code' => 'require'
     		)
     	),
         'Patient' => array(
@@ -80,6 +80,7 @@ class Common extends Controller {
 				'department_id' => 'require|number',
 				'office_id' => 'require|number',
 				'doctor_title' => 'require|number|length:1',
+
 			),
 			'update_doctor' => array(
 				'doctor_id' => 'require|number',
@@ -94,6 +95,7 @@ class Common extends Controller {
 			),
 			'select_doctor_list' => array(
 			    'office_id' => 'require|number',
+			    'page' => 'require|number'
 			),
 			'delete_doctor' => array(
 			    'doctor_id' => 'require|number',
@@ -176,6 +178,7 @@ class Common extends Controller {
 			),
 			'select_register' => array(
 			    'patient_id' => 'require|number',
+			    'page' => 'number|require'
 			),
 			'select_register_more' => array(
 			    'register_id' => 'require|number',
@@ -206,6 +209,7 @@ class Common extends Controller {
 			),
 			'select_test' => array(
 			    'patient_id' => 'require|number',
+			    'page' => 'number|require'
 			),
 			'select_test_more' => array(
 			    'test_id' => 'require|number',
@@ -229,6 +233,7 @@ class Common extends Controller {
 			),
 			'select_meal' => array(
 			    // 'meal_id' => 'require|number',
+			    'page' => 'number|require'
 			),
 			'select_meal_more' => array(
 			    'meal_id' => 'require|number',
@@ -407,11 +412,11 @@ class Common extends Controller {
     }
 
     //返还处理信息
-    public function return_msg($code, $msg = '', $data = []) {
+    public function return_msg($code, $msg = '', $data = [],$num = 0) {
         $return_data['code'] = $code;
         $return_data['msg']  = $msg;
         $return_data['data'] = $data;
-
+        $return_data['num'] = $num;
         echo json_encode($return_data);
         die;
     }

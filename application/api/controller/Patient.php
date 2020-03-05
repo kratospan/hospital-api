@@ -28,12 +28,12 @@ class Patient extends Common{
 	public function select_patient_list(){
 		$data = $this->params['user_id'];
 		$res = db('patient')->where('user_id',$data)->select();
-		if(count($res,COUNT_RECURSIVE) > 0){
+		if(count($res) > 0){
 			foreach ($res as $key => $value) {
 				$card = $res[$key]['patient_card'];
 				substr_replace($card,"*******",8,);
 			}
-			$this->return_msg(200,'查询就诊人列表成功',$res);
+			$this->return_msg(200,'查询就诊人列表成功',$res,count($res));
 		}elseif (count($res,COUNT_RECURSIVE) == 0) {
 			$this->return_msg(200,'查询就诊人列表成功',$res);
 		}

@@ -43,20 +43,22 @@ class Test extends Common{
 
 	public function select_test(){
 		$data = $this->params['patient_id'];
-
+		$page = $this->params['page'];
+		// $page = $this->params[]
 		//将预约时间由时间戳转成普通时间
 		$res = Db::table('test')
 			   ->join('patient','test.patient_id = patient.patient_id')
 			   ->join('meal','test.meal_id = meal.meal_id')
 			   ->where('test.patient_id','=',$data)
+			   ->page($page,10)
 			   ->select();
 		$array = ["周日","周一","周二","周三","周四","周五","周六"];
 		foreach ($res as $key => $value) {
 			$res[$key]['test_date'] = date('Y-m-d', $res[$key]['test_date']);
-			// $res[$key]['test_week'] = date('w',$res[$key]['test_date']);
+			$res[$key]['test_status'] = $this->turn_status($res[$key]['test_status']);
 		}
 		if(count($res) >= 0){
-			$this->return_msg(200,'查询预约成功',$res);
+			$this->return_msg(200,'查询预约成功',$res,count($res));
 		}else{
 			$this->return_msg(400,'查询预约失败',$res);
 		}
@@ -70,10 +72,11 @@ class Test extends Common{
 			   ->join('meal','test.meal_id = meal.meal_id')
 			   ->where('test_id','=',$data)
 			   ->find();
-		$res['test_day'] = $this->turn_day($res['test_date']);
-		$res['test_date'] = date('Y-m-d', $res['test_date']);
 		if(count($res) >= 0){
-			$this->return_msg(200,'查询预约成功',$res);
+			$res['test_day'] = $this->turn_day($res['test_date']);
+			$res['test_date'] = date('Y-m-d', $res['test_date']);
+			$res['test_status'] = $this->turn_status($res['test_status']);
+			$this->return_msg(200,'查询预约成功',$res,count($res));
 		}else{
 			$this->return_msg(400,'查询预约失败',$res);
 		}
