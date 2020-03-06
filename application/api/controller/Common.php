@@ -355,8 +355,12 @@ class Common extends Controller {
     protected function _initialize() {
         parent::_initialize();
         $this->request = Request::instance();
-        // $this->check_time($this->request->only(['time']));
-        // $this->check_token($this->request->param());
+		// $this->check_time($this->request->only(['time']));
+		
+		$check = $this->request->param();
+        if(!isset($check['code'])){
+			$this->check_token($this->request->param());
+		}
        	$this->params = $this->check_params($this->request->except(['time','token']));   //验证数据的有效性
     }
 
@@ -381,19 +385,13 @@ class Common extends Controller {
      **/
     public function check_token($arr) {
         if (!isset($arr['token']) || empty($arr['token'])) {
-            $this->return_msg(401, 'token值为空');
+            $this->return_msg(101, 'token值为空');
         }
         $app_token = $arr['token'];
-        unset($arr['token']);
-        $service_token = '';
-        foreach ($arr as $key => $value) {
-            $service_token .= md5($value);
-        }
-        $service_token = md5('api_' . $service_token . '_api'); //服务器实时生成token
-
-        if ($app_token !== $service_token) {
-            $this->return_msg(401, 'token值不正确');
-        }
+		$res = db('user')->where('token',$app_token)->find();
+		if(!$res){
+			$this->return_msg(101,'token值错误');
+		}
     }
 
 
