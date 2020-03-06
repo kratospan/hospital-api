@@ -20,19 +20,19 @@ class Test extends Common{
 		unset($data['user_id']);
 		$data['test_status'] = 0;
 		$data['order_time'] = time();
-		$res = db('test')->insertGetId($data);
-		if($res){
+		$test_id = db('test')->insertGetId($data);
+		if($test_id){
 			$notice = [
 				'notice_content' => '你已成功预约体检，点击查看详情',
 				'notice_title' => '预约成功',
 				'notice_type' => 1,
 				'notice_time' => time(),
 				'user_id' => $user_id,
-				'test_id' => $res
+				'test_id' => $test_id
 			];
 			$res = db('notice')->insertGetId($notice);
 			if($res){
-				$this->return_msg(200,'新增预约成功',$res);
+				$this->return_msg(200,'新增预约成功',$test_id);
 			}else{
 				$this->return_msg(400,'新增预约失败');
 			}
@@ -72,7 +72,7 @@ class Test extends Common{
 			   ->join('meal','test.meal_id = meal.meal_id')
 			   ->where('test_id','=',$data)
 			   ->find();
-		if(count($res) >= 0){
+		if($res){
 			$res['test_day'] = $this->turn_day($res['test_date']);
 			$res['test_date'] = date('Y-m-d', $res['test_date']);
 			$res['test_status'] = $this->turn_status($res['test_status']);

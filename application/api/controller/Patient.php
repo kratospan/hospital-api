@@ -5,6 +5,11 @@ class Patient extends Common{
 
 	public function add_patient(){
 		$data = $this->params;
+		$user_id = $this->params['user_id'];
+		$res = db('patient')->where('user_id',$user_id)->select();
+		if(count($res) >= 5){
+			$this->return_msg(400,'添加就诊人失败，一个用户最多只能添加5个就诊人',$res);
+		}
 		$res = db('patient')->insertGetId($data);
 		if($res){
 			$this->return_msg(200,'新增就诊人成功',$res);
