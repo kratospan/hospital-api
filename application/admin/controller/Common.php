@@ -1,6 +1,5 @@
 <?php
-namespace app\api\controller;
-namespace app\api\controller;
+namespace app\admin\controller;
 
 use think\Validate;
 use think\Controller;
@@ -34,13 +33,8 @@ class Common extends Controller {
                 'patient_id' => 'require|number'
             ),
 			'select_patient_list' => array(
-			    'user_id' => 'require|number'
-			),
-			'select_patient_list_admin' => array(
-			    // 'page' => 'require|number'
-			),
-			'select_patient_list_admin_by' => array(
-			    // 'page' => 'require|number'
+				// 'user_id' => 'require|number'
+				'page' => 'require|number'
 			),
             'update_patient' => array(
                 'patient_id' => 'require|number',
@@ -103,15 +97,6 @@ class Common extends Controller {
 			    'office_id' => 'require|number',
 			    'page' => 'require|number'
 			),
-			'select_doctor_list_admin'  => array(
-				'doctor_name' => 'chsAlpha',
-				'department_id' => 'number',
-				'office_id' => 'number',
-				'doctor_title' => 'number|length:1',
-			),
-			'select_doctor_list_by'  => array(
-
-			),
 			'delete_doctor' => array(
 			    'doctor_id' => 'require|number',
 			)
@@ -147,9 +132,6 @@ class Common extends Controller {
 			'select_office_more' => array(
 			    'office_id' => 'require|number',
 			),
-			'select_office_list_admin' => array(
-			    'office_id' => 'number',
-			),
 			'delete_office' => array(
 			    'office_id' => 'require|number',
 			)
@@ -165,9 +147,6 @@ class Common extends Controller {
 			),
 			'select_user' => array(
 			    'user_id' => 'require',
-			),
-			'select_user_list_admin' => array(
-			    // 'user_id' => 'require',
 			),
 			'delete_user' => array(
 			    'user_id' => 'require',
@@ -204,9 +183,6 @@ class Common extends Controller {
 			'select_register_more' => array(
 			    'register_id' => 'require|number',
 			),
-			'select_register_list_admin'=> array(
-			    // 'register_id' => 'require|number',
-			),
 			'delete_register' => array(
 			    'register_id' => 'require|number',
 			)
@@ -235,9 +211,6 @@ class Common extends Controller {
 			    'patient_id' => 'require|number',
 			    'page' => 'number|require'
 			),
-			'select_test_list_admin' => array(
-				
-			),
 			'select_test_more' => array(
 			    'test_id' => 'require|number',
 			),
@@ -261,10 +234,6 @@ class Common extends Controller {
 			'select_meal' => array(
 			    // 'meal_id' => 'require|number',
 			    'page' => 'number|require'
-			),
-			'select_meal_list_admin' => array(
-			    // 'meal_id' => 'require|number',
-			    // 'page' => 'number|require'
 			),
 			'select_meal_more' => array(
 			    'meal_id' => 'require|number',
@@ -313,9 +282,6 @@ class Common extends Controller {
 			),
 			'select_schedul_web' => array(
 			    'office_id' => 'require|number',
-			),
-			'select_schedul_list_admin' => array(
-			    // 'office_id' => 'require|number',
 			),
 			'select_schedul_miniapp' => array(
 			    'doctor_id' => 'require|number',
@@ -485,77 +451,7 @@ class Common extends Controller {
     	// 0是主任医师，1是副主任医师，2是主治医师，3是住院医师
     	$array = ['主任医师','副主任医师','主治医师','住院医师'];
     	return $array[$title];
-	}
-	
-	//判断性别
-	public function turn_sex($sex){
-		// 0是主任医师，1是副主任医师，2是主治医师，3是住院医师
-    	$array = ['女','男'];
-    	return $array[$sex];
-	}
+    }
 
 
-	public function select_all($table_name){
-		$res = db($table_name)->count();
-		if($res){
-			return $res;
-		}else{
-			$this->return_msg(400,'获取表数据失败');
-		}
-	}
-
-	//获取数组中的值并转化为sql语句
-	public function turn_sql($array,$table_name){
-		$a = 0;
-		// echo  sizeof($data);
-		foreach($array as $key => $value){
-			if($value == '') $a += 1;
-		}
-
-		if($a == sizeof($array)){
-			$sql = "select * from ".$table_name;
-			return $sql;
-		}else{
-			$sql = "select * from ".$table_name." where";
-			foreach($array as $key => $value){
-				if($value != ''){
-					if($key == 'meal_name'){
-						$sql = $sql."and ".$key." like '%".$value."%'";
-					}else{
-						$sql = $sql."and ".$key." = '".$value."'";
-					}
-				}	
-			}
-			$needle = "and";
-			$sql = substr_replace($sql,"",strpos($sql,$needle),strlen($needle));
-			// echo $sql;
-			return $sql;
-		}
-	}
-
-	//获取数组中的值并转化为sql语句
-	public function turn_special_sql($array){
-		$a = 0;
-		// echo  sizeof($data);
-		foreach($array as $key => $value){
-			if($value == '') $a += 1;
-		}
-
-		if($a == sizeof($array)){
-			$sql = "";
-			return $sql;
-		}else{
-			$where = " where";
-			$sql = '';
-			foreach($array as $key => $value){
-				if($value != ''){
-					$sql = $sql."and ".$key." = '".$value."'";
-				}
-			}
-			$needle = "and";
-			$sql = substr_replace($sql,"",strpos($sql,$needle),strlen($needle));
-			// echo $where.$sql;
-			return $where.$sql;
-		}
-	}
 }

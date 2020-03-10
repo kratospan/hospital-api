@@ -1,5 +1,5 @@
 <?php 
-namespace app\api\controller;
+namespace app\admin\controller;
 
 class Office extends Common{
 	public function add_office(){
@@ -31,8 +31,6 @@ class Office extends Common{
 			$this->return_msg(400,'查询科室失败',$res);
 		}
 	}
-
-
 	
 	public function update_office(){
 		$data = $this->params;
@@ -53,16 +51,4 @@ class Office extends Common{
 			$this->return_msg(400,'删除科室失败',$res);
 		}
 	}
-
-	//网页管理后台 api
-	public function select_office_list_admin(){
-		// $data = $this->params['office_id'];
-		$res = db('office')->select();
-		if(count($res) >= 0){
-			$this->return_msg(200,'查询科室成功',$res,count($res));
-		}else{
-			$this->return_msg(400,'查询科室失败',$res);
-		}
-	}
-
 }

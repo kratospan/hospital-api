@@ -1,5 +1,5 @@
 <?php 
-namespace app\api\controller;
+namespace app\admin\controller;
 use think\Db;
 
 class Doctor extends Common{
@@ -59,40 +59,6 @@ class Doctor extends Common{
 			$this->return_msg(200,'删除医生成功',$res);
 		}else{
 			$this->return_msg(400,'删除医生失败',$res);
-		}
-	}
-
-	//网页管理后端接口
-
-	//获取所有的医生信息
-	public function select_doctor_list_admin(){
-		$data = $this->params;
-		$sql = "SELECT o.office_id,o.office_name,d1.doctor_name,d1.doctor_sex,d1.doctor_title,d1.doctor_introduce,d1.doctor_payment,d1.doctor_good,d1.doctor_id,d2.department_name,d1.department_id from doctor d1 INNER JOIN office o on o.office_id = d1.office_id INNER JOIN department d2 on d1.department_id = d2.department_id ";
-		$sql = $sql.$this->turn_special_sql($data);
-		// echo $sql;
-		$res = Db::query($sql);
-		if(count($res) >= 0){
-			foreach ($res as $key => $value) {
-				$res[$key]['doctor_title'] = $this->turn_title($res[$key]['doctor_title']);
-				$res[$key]['doctor_sex'] = $this->turn_sex($res[$key]['doctor_sex']);
-			}
-			$this->return_msg(200,'查询医生成功',$res,count($res));
-		}else{
-			$this->return_msg(400,'查询医生失败',$res);
-		}
-	}
-
-	public function select_doctor_list_by(){
-		$data = $this->params['office_id'];
-		// $page = $this->params['page'];
-		$res = db('doctor')->where('office_id',$data)->select();
-		if(count($res) >= 0){
-			foreach ($res as $key => $value) {
-				$res[$key]['doctor_title'] = $this->turn_title($res[$key]['doctor_title']);
-			}
-			$this->return_msg(200,'查询医生成功',$res,count($res));
-		}else{
-			$this->return_msg(400,'查询医生失败',$res);
 		}
 	}
 }

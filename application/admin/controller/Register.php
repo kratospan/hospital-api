@@ -1,7 +1,5 @@
 <?php 
-namespace app\api\controller;
-
-use think\Db;
+namespace app\admin\controller;
 
 class Register extends Common{
 
@@ -152,43 +150,6 @@ class Register extends Common{
 			$this->return_msg(200,'删除预约成功',$res);
 		}else{
 			$this->return_msg(400,'删除预约失败',$res);
-		}
-	}
-
-	//一下皆为网页管理后端的api
-	public function select_register_list_admin(){
-		$data = $this->params;
-		$sql = "SELECT R.register_id,
-					   R.register_status,
-		  			   D.doctor_id,
-		  			   D.doctor_name,
-		  			   R.payment_method,
-		  			   P.patient_id,
-		  			   P.patient_name,
-		  			   R.order_time,
-		  			   R.register_date,
-		  			   R.register_time,
-		  			   R.payment_status
-					   FROM register R
-		  			   INNER JOIN doctor D
-					   ON R.doctor_id = D.doctor_id
-		  			   INNER JOIN patient P
-					   ON R.patient_id = P.patient_id";
-		$sql = $sql.$this->turn_special_sql($data);
-		// echo $sql;
-		$res = Db::query($sql);
-		if(count($res) >= 0){
-			foreach($res as $key => $value){
-				$res[$key]['register_time'] = $this->turn_time($res[$key]['register_time']);
-				$res[$key]['register_date'] = date('Y-m-d',$res[$key]['register_date']);
-				$res[$key]['order_time'] = date('Y-m-d',$res[$key]['order_time']);
-				$res[$key]['register_status'] = $this->turn_status($res[$key]['register_status']);
-			}
-			// echo $sql;
-			$this->return_msg(200,'查询排班记录成功',$res,count($res));
-		}
-		else{
-			$this->return_msg(400,'查询排班记录失败',$res);
 		}
 	}
 }

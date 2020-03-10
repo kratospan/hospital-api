@@ -1,5 +1,5 @@
 <?php 
-namespace app\api\controller;
+namespace app\admin\controller;
 
 use think\Db;
 
@@ -7,21 +7,6 @@ class Schedul extends Common{
 
 	public function add_schedul(){
 		$data = $this->params;
-		$date = $data['schedul_date'];
-		$doctor = $data['doctor_id'];
-		$time = $data['schedul_time'];
-		$res = db('schedul')
-			   ->where('schedul_date',$date)
-			   ->where('doctor_id',$doctor)
-			   ->select();
-		if(count($res) > 0){
-			foreach($res as $key => $value){
-				if($time == $res[$key]['schedul_time']){
-					$this->return_msg(400,'该医生当天已有相同的时间段排班',$res);
-				}
-			};
-		}	
-		
 		$res = db('schedul')->insertGetId($data);
 		if($res){
 			$this->return_msg(200,'新增排班成功',$res);
@@ -99,39 +84,6 @@ class Schedul extends Common{
 			$this->return_msg(200,'删除排班成功',$res);
 		}else{
 			$this->return_msg(400,'删除排班失败',$res);
-		}
-	}
-
-	//以下是网页后台的api
-	public function select_schedul_list_admin(){
-		$data = $this->params;
-		$sql = "SELECT o.office_id,
-		               o.office_name,
-                       d.doctor_name,
-                       d.doctor_id,
-                       s.schedul_id,
-                       s.schedul_date,
-                       s.schedul_time,
-                       s.is_book
-				from schedul s 
-				INNER JOIN office o 
-				on o.office_id = s.office_id 
-				INNER JOIN doctor d 
-				on d.doctor_id = s.doctor_id ";
-		$sql = $sql.$this->turn_special_sql($data)." ORDER BY doctor_id,schedul_date,schedul_time";
-		$res = Db::query($sql);
-		$arr = ['正常排班','已被预约'];
-		if(count($res) >= 0){
-			foreach($res as $key => $value){
-				$res[$key]['schedul_time'] = $this->turn_time($res[$key]['schedul_time']);
-				$res[$key]['schedul_date'] = date('Y-m-d',$res[$key]['schedul_date']);
-				$res[$key]['is_book'] = $arr[$res[$key]['is_book']];
-			}
-			// echo $sql;
-			$this->return_msg(200,'查询排班记录成功',$res,count($res));
-		}
-		else{
-			$this->return_msg(400,'查询排班记录失败',$res);
 		}
 	}
 }

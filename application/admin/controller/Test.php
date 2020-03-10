@@ -1,5 +1,5 @@
 <?php 
-namespace app\api\controller;
+namespace app\admin\controller;
 use think\Db;
 
 class Test extends Common{
@@ -142,23 +142,6 @@ class Test extends Common{
 			$this->return_msg(200,'删除预约成功',$res);
 		}else{
 			$this->return_msg(400,'删除预约失败',$res);
-		}
-	}
-
-	//以下是网页后台的端口
-	public function select_test_list_admin(){
-		$data = $this->params;
-		$sql = $this->turn_sql($data,'test');
-		$res = Db::query($sql);
-		if(count($res) >= 0){
-			foreach($res as $key => $value){
-				$res[$key]['test_status'] = $this->turn_status($res[$key]['test_status']);
-				$res[$key]['test_date'] = date('Y-m-d',$res[$key]['test_date']);
-				$res[$key]['order_time'] = date('Y-m-d',$res[$key]['order_time']);
-			}
-			$this->return_msg(200,'查询体检记录成功',$res,count($res));
-		}else{
-			$this->return_msg(400,'查询体检记录失败',$res);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 <?php 
-namespace app\api\controller;
-use think\Db;
+namespace app\admin\controller;
 
 class Meal extends Common{
 
@@ -52,19 +51,6 @@ class Meal extends Common{
 			$this->return_msg(200,'删除套餐成功',$res);
 		}else{
 			$this->return_msg(400,'删除套餐失败',$res);
-		}
-	}
-
-	//以下全部是网页后台的接口
-	public function select_meal_list_admin(){
-		$data = $this->params;
-		$sql = $this->turn_sql($data,'meal');
-		// echo $sql;
-		$res = Db::query($sql);
-		if(count($res) >= 0){
-			$this->return_msg(200,'查询体检记录成功',$res,count($res));
-		}else{
-			$this->return_msg(400,'查询体检记录失败',$res);
 		}
 	}
 }

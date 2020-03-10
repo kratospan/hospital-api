@@ -1,6 +1,6 @@
 <?php 
 
-namespace app\api\controller;
+namespace app\admin\controller;
 
 class Code extends Common{
 	public function send_before_check(){
