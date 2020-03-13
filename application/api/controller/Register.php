@@ -15,6 +15,7 @@ class Register extends Common{
 		$res = db('register')
 			   ->where('register_date',$register_date)
 			   ->where('patient_id',$patient_id)
+			   ->where('register_status',0)
 			   ->find();
 		if($res){
 			$this->return_msg(400,'挂号预约失败,同一个就诊人同一天只能预约挂号一个时段',$res);
@@ -32,7 +33,7 @@ class Register extends Common{
 				'notice_type' => 0,
 				'notice_time' => time(),
 				'user_id' => $user_id,
-				'test_id' => $res
+				'register_id' => $res
 			];
 			$res = db('notice')->insertGetId($notice);
 			if($res){

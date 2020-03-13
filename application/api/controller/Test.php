@@ -161,4 +161,6 @@ class Test extends Common{
 			$this->return_msg(400,'查询体检记录失败',$res);
 		}
 	}
+
+	
 }

@@ -41,7 +41,7 @@ class Meal extends Common{
 		if($res){
 			$this->return_msg(200,'更新套餐成功',$res);
 		}else{
-			$this->return_msg(400,'更新套餐失败',$res);
+			$this->return_msg(400,'更新套餐失败(有可能是数据没有修改)',$res);
 		}
 	}
 

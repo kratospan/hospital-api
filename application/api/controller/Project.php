@@ -23,19 +23,20 @@ class Project extends Common{
 		}
 	}
 
-	public function update_meal(){
+	public function update_project(){
 		$data = $this->params;
-		$res = db('project')->where('meal_id',$data['meal_id'])->update($data);
+		$res = db('project')->where('project_id',$data['project_id'])->update($data);
 		if($res){
 			$this->return_msg(200,'更新套餐成功',$res);
 		}else{
-			$this->return_msg(400,'更新项目失败',$res);
+			$this->return_msg(400,'更新项目失败(有可能是数据没有修改)',$res);
 		}
 	}
 
 	public function delete_project(){
 		$data = $this->params;
-		$res = db('project')->delete($data['meal_id']);
+		$project_id = $this->params['project_id'];
+		$res = db('project')->delete($data['project_id']);
 		if($res){
 			$this->return_msg(200,'删除项目成功',$res);
 		}else{

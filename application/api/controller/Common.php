@@ -129,6 +129,9 @@ class Common extends Controller {
 			),
 			'delete_department' => array(
 			    'department_id' => 'require|number',
+			),
+			'select_department_list_admin' => array(
+			    'department_id' => 'number',
 			)
 		),
 		'Office' => array(
@@ -148,6 +151,9 @@ class Common extends Controller {
 			    'office_id' => 'require|number',
 			),
 			'select_office_list_admin' => array(
+			    'office_id' => 'number',
+			),
+			'select_office_list_more_admin'=> array(
 			    'office_id' => 'number',
 			),
 			'delete_office' => array(
@@ -250,7 +256,7 @@ class Common extends Controller {
 				'meal_name' => 'require',
 				'meal_cost' => 'require|number',
 				'meal_introduce' => 'require',
-				'meal_type' => 'require|number'
+				'meal_type' => 'number'
 			),
 			'update_meal' => array(
 				'meal_name' => 'require',
@@ -348,30 +354,41 @@ class Common extends Controller {
 		    'add_patient' => array(
 		        // 'patient_id' => 'require|number',
 		        'patient_name.require' => '就诊人姓名不能为空',
-		        'patient_name.chsAlpha' => '就诊人姓名格式错误',
+		        'patient_name.chsAlpha' => '就诊人姓名只能是汉字和字母',
 				
 		        'patient_card.require' => '身份证号码不能为空',
 				'patient_card.number' => '身份证号码格式错误',
 				'patient_card.unique' => '身份证号码已被绑定',
 				
-		        'patient_phone。require' => '手机号码不能为空',
+		        'patient_phone.require' => '手机号码不能为空',
 				'patient_phone.number' => '手机号码格式错误',
 				'patient_phone.length' => '手机号码格式错误',
 				
-		        'patient_relationship' => 'require|chs',
-		        'user_id' => 'require|number'
+				'patient_relationship.require' => '与就诊人的关系不能为空',
+				'patient_relationship.chs' => '与就诊人的关系格式不正确',
+				'user_id.require' => '用户ID不能为空',
+				'user_id.number' => '用户ID只能是数字'
 		    ),
 		    'select_patient' => array(
-		        'patient_id' => 'require|number'
+				'patient_id.require' => '就诊人ID不能为空',
+				'patient_id.number' => '就诊人ID只能是数字'
 		    ),
 		    'update_patient' => array(
-		        'patient_id' => 'require|number',
-		        'patient_name' => 'require|chs',
+				'patient_id.require' => '就诊人ID不能为空',
+				'patient_id.number' => '就诊人ID只能是数字',
+				'patient_name' => 'require|chs',
+				'patient_name' => 'require|chs',
 		        'patient_card' => 'require',
-		        'patient_phone' => 'require|number|length:11',
-		        'patient_sex' => 'require|number|length:1',
-		        'patient_relationship' => 'require|chs',
-		        'user_id' => 'require|number'
+				'patient_phone' => 'require|number|length:11',
+				'patient_phone' => 'require|number|length:11',
+				'patient_phone' => 'require|number|length:11',
+				'patient_sex' => 'require|number|length:1',
+				'patient_sex' => 'require|number|length:1',
+				'patient_sex' => 'require|number|length:1',
+		        'patient_relationship.require' => '与就诊人的关系不能为空',
+				'patient_relationship.chs' => '与就诊人的关系格式不正确',
+		        'user_id.require' => '用户ID不能为空',
+				'user_id.number' => '用户ID只能是数字'
 		    ),
 		    'delete_patient' => array(
 		        'patient_id' => 'require|number'
@@ -519,7 +536,7 @@ class Common extends Controller {
 			$sql = "select * from ".$table_name." where";
 			foreach($array as $key => $value){
 				if($value != ''){
-					if($key == 'meal_name'){
+					if($key == 'meal_name'||$key == 'department_name'){
 						$sql = $sql."and ".$key." like '%".$value."%'";
 					}else{
 						$sql = $sql."and ".$key." = '".$value."'";
@@ -549,7 +566,11 @@ class Common extends Controller {
 			$sql = '';
 			foreach($array as $key => $value){
 				if($value != ''){
-					$sql = $sql."and ".$key." = '".$value."'";
+					if($key == 'department_name' || $key == 'office_name'||$key == 'doctor_name'){
+						$sql = $sql."and ".$key." like '%".$value."%'";
+					}else{
+						$sql = $sql."and ".$key." = '".$value."'";
+					}
 				}
 			}
 			$needle = "and";

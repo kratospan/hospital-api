@@ -1,6 +1,8 @@
 <?php 
 namespace app\api\controller;
 
+use think\Db;
+
 class Office extends Common{
 	public function add_office(){
 		$data = $this->params;
@@ -40,7 +42,7 @@ class Office extends Common{
 		if($res){
 			$this->return_msg(200,'更新科室成功',$res);
 		}else{
-			$this->return_msg(400,'更新科室失败',$res);
+			$this->return_msg(400,'更新科室失败(可能是没有更新任何数据)',$res);
 		}
 	}
 	
@@ -65,4 +67,25 @@ class Office extends Common{
 		}
 	}
 
+	public function select_office_list_more_admin(){
+		$data = $this->params;
+		$sql = "SELECT
+		d.department_id,
+		d.department_name,
+		o.office_id,
+		o.office_name,
+		o.office_introduce,
+		o.office_phone 
+	FROM
+		office o
+		INNER JOIN department d ON d.department_id = o.department_id";
+		$sql = $sql.$this->turn_special_sql($data);
+		$res = Db::query($sql);
+		if(count($res) >= 0){
+			$this->return_msg(200,'查询排班记录成功',$res,count($res));
+		}
+		else{
+			$this->return_msg(400,'查询排班记录失败',$res);
+		}
+	}
 }
