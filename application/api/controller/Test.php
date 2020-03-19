@@ -162,5 +162,37 @@ class Test extends Common{
 		}
 	}
 
+	public function select_photo(){
+		$data = $this->params;
+		$res = db('photo')
+				->where('test_id',$data['test_id'])
+				->select();
+		if(count($res) >= 0){
+			$this->return_msg(200,'查询体检报告成功',$res,count($res));
+		}else{
+			$this->return_msg(400,'查询体检报告失败');
+		}
+	}
+
+	public function add_photo(){
+		$data = $this->params;
+		$res = db('photo')->insertGetId($data);
+		if($res){
+			$this->return_msg(200,'添加体检报告成功',$res);
+		}else{
+			$this->return_msg(400,'添加体检报告失败');
+		}
+	}
+
+	public function delete_photo(){
+		$data = $this->params;
+		$res = db('photo')->where('photo_id',$data['photo_id'])->delete();
+		if($res){
+			$this->return_msg(200,'删除体检报告成功',$res);
+		}else{
+			$this->return_msg(400,'删除体检报告失败');
+		}
+	}
+
 	
 }

@@ -249,6 +249,17 @@ class Common extends Controller {
 			),
 			'delete_test' => array(
 			    'test_id' => 'require|number',
+			),
+			'add_photo' => array(
+				'test_id' => 'require|number',
+				'name' => 'require',
+				'photo_url' => 'require',
+			),
+			'select_photo' => array(
+				'test_id' => 'require'
+			),
+			'delete_photo' => array(
+				'photo_id' => 'require'
 			)
 		),
 		'Meal' => array(
