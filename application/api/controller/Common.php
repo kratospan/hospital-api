@@ -18,7 +18,11 @@ class Common extends Controller {
     		'login' => array (
     			// 'user_name' => ['require','chsDash','max'=>20],
     			'code' => 'require'
-    		)
+    		),
+			'login_admin' => array(
+				'admin_name' => 'require',
+				'admin_pwd' => 'require'
+			)
     	),
         'Patient' => array(
             'add_patient' => array(
@@ -340,6 +344,9 @@ class Common extends Controller {
 			),
 			'delete_schedul' => array(
 			    'schedul_id' => 'require|number',
+			),
+			'get_schedul_date' => array(
+				
 			)
 		),
 		'Code' => array(

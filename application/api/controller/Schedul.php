@@ -101,6 +101,25 @@ class Schedul extends Common{
 			$this->return_msg(400,'删除排班失败',$res);
 		}
 	}
+	
+	//获取未来7天的排班日期
+	public function get_schedul_date(){
+		$data = $this->params;
+		$date = date("Y-m-d",time());
+		$now = time();
+		$timestamp = strtotime($date);
+		$dateList = [];
+		$array = ['日','一','二','三','四','五','六'];
+		for($i = 0;$i < 7;$i++){
+			$timestamp = $timestamp + 60*60*24;
+			$dateList[$i] = [
+				"day" => $array[date('w',$timestamp)],
+				"date" =>date('d',$timestamp),
+				"dateTime" => $timestamp
+			];
+		}
+		$this->return_msg(200,'获取排班日期成功',$dateList);
+	}
 
 	//以下是网页后台的api
 	public function select_schedul_list_admin(){
@@ -134,4 +153,5 @@ class Schedul extends Common{
 			$this->return_msg(400,'查询排班记录失败',$res);
 		}
 	}
+	
 }
