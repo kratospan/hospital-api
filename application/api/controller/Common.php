@@ -116,6 +116,9 @@ class Common extends Controller {
 			'select_doctor_list_by'  => array(
 
 			),
+			'select_doctor_list_view'  => array(
+				'page' => 'number|require'
+			),
 			'delete_doctor' => array(
 			    'doctor_id' => 'require|number',
 			)

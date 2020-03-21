@@ -81,7 +81,8 @@ class Doctor extends Common{
 			$this->return_msg(400,'查询医生失败',$res);
 		}
 	}
-
+	
+	//根据科室ID查询对应的医生
 	public function select_doctor_list_by(){
 		$data = $this->params['office_id'];
 		// $page = $this->params['page'];
@@ -91,6 +92,32 @@ class Doctor extends Common{
 				$res[$key]['doctor_title'] = $this->turn_title($res[$key]['doctor_title']);
 			}
 			$this->return_msg(200,'查询医生成功',$res,count($res));
+		}else{
+			$this->return_msg(400,'查询医生失败',$res);
+		}
+	}
+	
+	//以下是通过视图来查询的
+	public function select_doctor_list_view(){
+		$data = $this->params;
+		$page = $data['page'];
+		if($page < 1){
+			$this->return_msg(400,'页码不能小于1');
+		}
+		$page = $data['page'] - 1;
+		unset($data['page']);
+		$sql = "select SQL_CALC_FOUND_ROWS* from select_doctor";
+		$sql = $sql.$this->turn_special_sql($data).' limit '.($page*15).',15';
+		// echo $sql;
+		$res = Db::query($sql);
+		if(count($res) >= 0){
+			foreach ($res as $key => $value) {
+				$res[$key]['doctor_title'] = $this->turn_title($res[$key]['doctor_title']);
+				$res[$key]['doctor_sex'] = $this->turn_sex($res[$key]['doctor_sex']);
+			}
+			//获取查询数据的总数
+			$num = Db::query('SELECT FOUND_ROWS()');
+			$this->return_msg(200,'查询医生成功',$res,$num[0]['FOUND_ROWS()']);
 		}else{
 			$this->return_msg(400,'查询医生失败',$res);
 		}
