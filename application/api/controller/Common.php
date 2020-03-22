@@ -226,9 +226,7 @@ class Common extends Controller {
 		),
 		'Test' => array(
 			'add_test' => array(
-				// 'test_status' => 'require|number',
 				'patient_id' => 'require|number',
-				// 'order_time' => 'require|number',
 				'test_date' => 'require|number',
 				'meal_id' => 'require|number',
 				'user_id' => 'require|number'
@@ -267,6 +265,10 @@ class Common extends Controller {
 			),
 			'delete_photo' => array(
 				'photo_id' => 'require'
+			),
+			'select_test_list_view' => array(
+				'patient_id' => 'require|number',
+				'page' => 'require|number'
 			)
 		),
 		'Meal' => array(

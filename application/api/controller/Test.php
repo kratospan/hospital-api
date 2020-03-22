@@ -144,6 +144,25 @@ class Test extends Common{
 			$this->return_msg(400,'删除预约失败',$res);
 		}
 	}
+	
+	//通过视图获取已经出了体检报告的体检记录
+	public function select_test_list_view(){
+		$data = $this->params;
+		$patient_id = $this->params['patient_id'];
+		$page = $data['page'] - 1;
+		$sql = 'select * from select_test_list where patient_id = '.$patient_id.' and has_result = 1 limit '.($page*10).',10';
+		// echo $sql;
+		$res = Db::query($sql);
+		if(count($res) >= 0){
+			foreach($res as $key => $value){
+				$res[$key]['test_status'] = $this->turn_status($res[$key]['test_status']);
+				$res[$key]['test_date'] = date('Y-m-d',$res[$key]['test_date']);
+			}
+			$this->return_msg(200,'查询体检报告成功',$res,count($res));
+		}else{
+			$this->return_msg(400,'查询体检报告失败');
+		}
+	}
 
 	//以下是网页后台的端口
 	public function select_test_list_admin(){
