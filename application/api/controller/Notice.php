@@ -24,8 +24,9 @@ class Notice extends Common {
 	
 	public function select_notice_list(){
 		$data = $this->params['user_id'];
+		$page = $this->params['page'];
 		// $page = $this->params['page'];
-		$res = db('notice')->where('user_id',$data)->order('notice_id','desc')->select();
+		$res = db('notice')->where('user_id',$data)->order('notice_id','desc')->page($page,8)->select();
 		foreach ($res as $key => $value) {
 			$x = time() - $res[$key]['notice_time'];
 			if($x < 60){
@@ -39,7 +40,7 @@ class Notice extends Common {
 			}
 		}
 		if(count($res) >= 0){
-			$this->return_msg(200,'查询通知成功',$res);
+			$this->return_msg(200,'查询通知成功',$res,count($res));
 		}else{
 			$this->return_msg(400,'查询通知失败',$res);
 		}

@@ -71,7 +71,7 @@ class Common extends Controller {
 			),
 			'select_notice_list' => array (
 				'user_id' => 'number|require',
-				// 'page' => 'number|require'
+				'page' => 'number|require'
 			),
 			'select_notice' => array (
 				'notice_id' => 'number|require'
