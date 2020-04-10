@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 class Office extends Common{
+	//添加科室信息
 	public function add_office(){
 		$data = $this->params;
 		$res = db('office')->insertGetId($data);
@@ -12,36 +13,32 @@ class Office extends Common{
 		}
 	}
 	
+	//查询科室信息
 	public function select_office(){
 		$data = $this->params['department_id'];
 		$res = db('office')->where('department_id',$data)->select();
 		if(count($res) >= 0){
-			$this->return_msg(200,'查询科室成功',$res);
+			$this->return_msg(200,'查询科室成功',$res,count($res));
 		}else{
 			$this->return_msg(400,'查询科室失败',$res);
 		}
 	}
-
-	public function select_office_more(){
-		$data = $this->params['office_id'];
-		$res = db('office')->where('office_id',$data)->find();
-		if(count($res) >= 0){
-			$this->return_msg(200,'查询科室成功',$res);
-		}else{
-			$this->return_msg(400,'查询科室失败',$res);
-		}
-	}
-	
+	//更新科室信息
 	public function update_office(){
 		$data = $this->params;
 		$res = db('office')->where('office_id',$data['office_id'])->update($data);
-		if($res){
-			$this->return_msg(200,'更新科室成功',$res);
+		// if($res){
+		// 	$this->return_msg(200,'更新科室成功',$res);
+		// }else{
+		// 	$this->return_msg(400,'更新科室失败',$res);
+		// }
+		if($res === false){
+			$this->return_msg(400,'修改科室失败',$res);
 		}else{
-			$this->return_msg(400,'更新科室失败',$res);
+			$this->return_msg(200,'修改科室成功',$res);
 		}
 	}
-	
+	//删除科室信息
 	public function delete_office(){
 		$data = $this->params;
 		$res = db('office')->delete($data['office_id']);

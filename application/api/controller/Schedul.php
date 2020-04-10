@@ -51,12 +51,12 @@ class Schedul extends Common{
 				->select();
 		if(count($res) >= 0){
 			$schedul2 = [
+				'0' => 3,
 				'1' => 3,
 				'2' => 3,
 				'3' => 3,
 				'4' => 3,
 				'5' => 3,
-				'6' => 3,
 			];
 			foreach ($res as $key => $value) {
 				$schedul2[$res[$key]['schedul_time']] = $res[$key]['is_book'];
@@ -64,14 +64,14 @@ class Schedul extends Common{
 			
 			// $schedul['data'] = $res;
 			$schedul['am'] = [
-				'1' => $schedul2[1],
-				'2' => $schedul2[2],
-				'3' => $schedul2[3],
+				'1' => $schedul2[0],
+				'2' => $schedul2[1],
+				'3' => $schedul2[2],
 			];
 			$schedul['pm'] = [
-				'4' => $schedul2[4],
-				'5' => $schedul2[5],
-				'6' => $schedul2[6],
+				'4' => $schedul2[3],
+				'5' => $schedul2[4],
+				'6' => $schedul2[5],
 			];
 			if(count($res) > 0){
 				$schedul['data'] = $res[0];

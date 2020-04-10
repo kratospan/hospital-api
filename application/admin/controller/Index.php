@@ -6,6 +6,6 @@ namespace app\admin\controller;
 
 class Index {
     public function index() {
-        echo '我是admin接口的index控制器的index方法';
+        echo '我是admin下的Index控制器的Index方法';
     }
 }

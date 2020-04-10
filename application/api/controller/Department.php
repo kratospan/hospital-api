@@ -51,7 +51,6 @@ class Department extends Common{
 		// echo $sql;
 		$res = Db::query($sql);
 		if(count($res) >= 0){
-		
 			$this->return_msg(200,'查询用户成功',$res,count($res));
 		}else{
 			$this->return_msg(400,'查询用户失败',$res);
