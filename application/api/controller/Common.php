@@ -497,6 +497,7 @@ class Common extends Controller {
 
     //将时间段标记转化为具体的时间
     public function turn_time($timestamp) {
+		// $timestamp = $timestamp - 1;
         $array = [
     		'08:00-09:00',
     		'09:00-10:00',

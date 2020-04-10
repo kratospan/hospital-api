@@ -81,4 +81,14 @@ class Test extends Common{
 			$this->return_msg(400,'删除体检报告失败');
 		}
 	}
+	//删除体检信息
+	public function delete_test(){
+		$data = $this->params;
+		$res = db('test')->delete($data['test_id']);
+		if($res){
+			$this->return_msg(200,'删除预约成功',$res);
+		}else{
+			$this->return_msg(400,'删除预约失败',$res);
+		}
+	}
 }

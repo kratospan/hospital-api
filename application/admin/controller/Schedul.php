@@ -7,6 +7,21 @@ class Schedul extends Common{
 	//添加排班信息
 	public function add_schedul(){
 		$data = $this->params;
+		$date = $data['schedul_date'];
+		$doctor = $data['doctor_id'];
+		$time = $data['schedul_time'];
+		$res = db('schedul')
+			   ->where('schedul_date',$date)
+			   ->where('doctor_id',$doctor)
+			   ->select();
+		if(count($res) > 0){
+			foreach($res as $key => $value){
+				if($time == $res[$key]['schedul_time']){
+					$this->return_msg(400,'该医生当天已有相同的时间段排班',$res);
+				}
+			};
+		}	
+		
 		$res = db('schedul')->insertGetId($data);
 		if($res){
 			$this->return_msg(200,'新增排班成功',$res);
